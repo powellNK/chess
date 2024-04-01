@@ -118,7 +118,7 @@ public class chess {
         do {
             coordRow = userInputCheck("Строка: ");
             coordCol = userInputCheck("Столбец: ");
-        } while (arrayActivePlayer[coordRow][coordCol] == Cell.EMPTY);
+        } while (arrayActivePlayer[coordRow][coordCol] == Cell.EMPTY && arrayEnemy[coordRow][coordCol] !=Cell.EMPTY);
         Cell figure;
         figure = arrayActivePlayer[coordRow][coordCol];
         arrayActivePlayer[coordRow][coordCol] = Cell.EMPTY;
@@ -153,6 +153,9 @@ public class chess {
                 break;
             case ROOK:
                 if (x1 == x2 || y1 == y2) {
+                    if (arrayEnemy[x2][y2]!=Cell.EMPTY){
+                        arrayEnemy[x2][y2]=Cell.EMPTY;
+                    }
                     result = true;
                 } else {
                     System.out.println("Ход невозможен. Повторите попытку");
@@ -160,6 +163,9 @@ public class chess {
                 break;
             case KNIGHT:
                 if (Math.abs((x1 - x2) * (y1 - y2)) == 2) {
+                    if (arrayEnemy[x2][y2]!=Cell.EMPTY){
+                        arrayEnemy[x2][y2]=Cell.EMPTY;
+                    }
                     result = true;
                 } else {
                     System.out.println("Ход невозможен. Повторите попытку");
@@ -167,6 +173,9 @@ public class chess {
                 break;
             case BISHOP:
                 if ((y1 - y2) * (y1 - y2) == (x1 - x2) * (x1 - x2)) {
+                    if (arrayEnemy[x2][y2]!=Cell.EMPTY){
+                        arrayEnemy[x2][y2]=Cell.EMPTY;
+                    }
                     result = true;
                 } else {
                     System.out.println("Ход невозможен. Повторите попытку");
@@ -174,6 +183,9 @@ public class chess {
                 break;
             case QUENN:
                 if (x1 == x2 || y1 == y2 || (y1 - y2) * (y1 - y2) == (x1 - x2) * (x1 - x2)) {
+                    if (arrayEnemy[x2][y2]!=Cell.EMPTY){
+                        arrayEnemy[x2][y2]=Cell.EMPTY;
+                    }
                     result = true;
                 } else {
                     System.out.println("Ход невозможен. Повторите попытку");
@@ -181,6 +193,9 @@ public class chess {
                 break;
             case KING:
                 if ((x1 - 1 <= x2 && x2 <= x1 + 1) && (y1 - 1 <= y2 && y2 <= y1 + 1)) {
+                    if (arrayEnemy[x2][y2]!=Cell.EMPTY){
+                        arrayEnemy[x2][y2]=Cell.EMPTY;
+                    }
                     result = true;
                 } else {
                     System.out.println("Ход невозможен. Повторите попытку");
