@@ -3,6 +3,18 @@ import java.util.Scanner;
 
 
 public class chess {
+
+    static int min(int a, int b) {
+        int min;
+        if (a > b) {
+            min = a;
+        } else {
+            min = b;
+        }
+        return min;
+    }
+
+    //потом цвет фигур
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RESET = "\u001B[0m";
@@ -43,7 +55,7 @@ public class chess {
     }
 
 
-    //расположение фигур игроков
+    //стартовое расположение фигур игроков
     static void fillStartBoard(Cell[][] array, Player player) {
         int rowPawn;
         int rowOst;
@@ -126,13 +138,13 @@ public class chess {
             System.out.println("Координаты хода: ");
             coordRowMove = userInputCheck("Строка: ");
             coordColMove = userInputCheck("Столбец: ");
-        } while (checkPossibleMove(figure, arrayEnemy, coordRow, coordCol, coordRowMove, coordColMove, activePlayer) == false);
+        } while (checkPossibleMove(figure, arrayEnemy, arrayActivePlayer, coordRow, coordCol, coordRowMove, coordColMove, activePlayer) == false);
 
         arrayActivePlayer[coordRowMove][coordColMove] = figure;
     }
 
     //проверка возможности походить
-    static boolean checkPossibleMove(Cell fiqure, Cell[][] arrayEnemy, int x1, int y1, int x2, int y2, Player activePlayer) {
+    static boolean checkPossibleMove(Cell fiqure, Cell[][] arrayEnemy, Cell[][] arrayActivePlayer, int x1, int y1, int x2, int y2, Player activePlayer) {
         boolean result = false;
         switch (fiqure) {
             case PAWN:
@@ -151,13 +163,28 @@ public class chess {
                     System.out.println("Ход невозможен. Повторите попытку");
                 }
                 break;
-                // остальные умеют бить, но и могут ходить через остальные фигуры=_=
+            // остальные умеют бить, но и могут ходить через остальные фигуры=_=
             case ROOK:
-                if (x1 == x2 || y1 == y2) {
-                    if (arrayEnemy[x2][y2] != Cell.EMPTY) {
-                        arrayEnemy[x2][y2] = Cell.EMPTY;
+                if (x1 == x2) {
+                    for (int i = min(y1, y2); i < Math.abs(y1 - y2); i++) {
+                        if (arrayEnemy[x2][i] != Cell.EMPTY || arrayActivePlayer[x2][i] != Cell.EMPTY) {
+                            System.out.println("Ход невозможен. Повторите попытку");
+                            break;
+                        } else {
+                            arrayEnemy[x2][y2] = Cell.EMPTY;
+                            result = true;
+                        }
                     }
-                    result = true;
+                } else if (y1 == y2) {
+                    for (int i = min(x1, x2); i < Math.abs(x1 - x2); i++) {
+                        if (arrayEnemy[i][y2] != Cell.EMPTY || arrayActivePlayer[i][y2] != Cell.EMPTY) {
+                            System.out.println("Ход невозможен. Повторите попытку");
+                            break;
+                        } else {
+                            arrayEnemy[x2][y2] = Cell.EMPTY;
+                            result = true;
+                        }
+                    }
                 } else {
                     System.out.println("Ход невозможен. Повторите попытку");
                 }
