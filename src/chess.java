@@ -111,7 +111,7 @@ public class chess {
 
 
     //Ход игрока
-    static void movePlayer(Cell[][] arrayActivePlayer, Cell[][] arrayEnemy) {
+    static void movePlayer(Cell[][] arrayActivePlayer, Cell[][] arrayEnemy, Player activePlayer) {
         System.out.println("Координаты фигуры: ");
         int coordRow, coordCol;
         int coordRowMove, coordColMove;
@@ -127,50 +127,65 @@ public class chess {
             System.out.println("Координаты хода: ");
             coordRowMove = userInputCheck("Строка: ");
             coordColMove = userInputCheck("Столбец: ");
-        } while (checkPossibleMove(figure, arrayEnemy, coordRow, coordCol, coordRowMove, coordColMove) == false);
+        } while (checkPossibleMove(figure, arrayEnemy, coordRow, coordCol, coordRowMove, coordColMove, activePlayer) == false);
 
         arrayActivePlayer[coordRowMove][coordColMove] = figure;
     }
 
-    static boolean checkPossibleMove(Cell fiqure, Cell[][] arrayEnemy, int x1, int y1, int x2, int y2) {
+    static boolean checkPossibleMove(Cell fiqure, Cell[][] arrayEnemy, int x1, int y1, int x2, int y2, Player activePlayer) {
         boolean result = false;
         switch (fiqure) {
             case PAWN:
-                if (Math.abs(y2 - y1) == 1) {
+                int tempCoodrX1;
+                int tempCoodrX2;
+                if (activePlayer == Player.PLAYER2){
+                    tempCoodrX1 = x2;
+                    tempCoodrX2 = x1;
+                }else{
+                    tempCoodrX1 = x1;
+                    tempCoodrX2 = x2;
+                }
+                if (tempCoodrX2 - tempCoodrX1 == 1 && arrayEnemy[x2][y2] == Cell.EMPTY  && arrayEnemy[x2][y2] == Cell.EMPTY){
                     result = true;
                 } else {
                     System.out.println("Ход невозможен. Повторите попытку");
                 }
+                break;
             case ROOK:
                 if (x1 == x2 || y1 == y2) {
                     result = true;
                 } else {
                     System.out.println("Ход невозможен. Повторите попытку");
                 }
+                break;
             case KNIGHT:
                 if (Math.abs((x1 - x2) * (y1 - y2)) == 2) {
                     result = true;
                 } else {
                     System.out.println("Ход невозможен. Повторите попытку");
                 }
+                break;
             case BISHOP:
                 if ((y1 - y2) * (y1 - y2) == (x1 - x2) * (x1 - x2)) {
                     result = true;
                 } else {
                     System.out.println("Ход невозможен. Повторите попытку");
                 }
+                break;
             case QUENN:
                 if (x1 == x2 || y1 == y2 || (y1 - y2) * (y1 - y2) == (x1 - x2) * (x1 - x2)) {
                     result = true;
                 } else {
                     System.out.println("Ход невозможен. Повторите попытку");
                 }
+                break;
             case KING:
                 if ((x1 - 1 <= x2 && x2 <= x1 + 1) && (y1 - 1 <= y2 && y2 <= y1 + 1)) {
                     result = true;
                 } else {
                     System.out.println("Ход невозможен. Повторите попытку");
                 }
+                break;
         }
         return result;
     }
@@ -219,10 +234,10 @@ public class chess {
             System.out.println();
             printArray(board);
             if (activePlayer == Player.PLAYER1) {
-                movePlayer(playerWhiteField, playerBlackField);
+                movePlayer(playerWhiteField, playerBlackField, activePlayer);
                 activePlayer = Player.PLAYER2;
             } else {
-                movePlayer(playerBlackField, playerWhiteField);
+                movePlayer(playerBlackField, playerWhiteField, activePlayer);
                 activePlayer = Player.PLAYER1;
             }
         }
