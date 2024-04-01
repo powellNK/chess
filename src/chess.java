@@ -3,6 +3,9 @@ import java.util.Scanner;
 
 
 public class chess {
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_RESET = "\u001B[0m";
 
     //проверка ввода
     private static int userInputCheck(String message) {
@@ -39,14 +42,6 @@ public class chess {
         }
     }
 
-    static void printArray(Cell[][] array) {
-        for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array[i].length; j++) {
-                System.out.print(array[i][j].getValue());
-            }
-            System.out.println();
-        }
-    }
 
     //расположение фигур игроков
     static void fillStartBoard(Cell[][] array, Player player) {
@@ -92,18 +87,22 @@ public class chess {
     }
 
     //все поле
-    static Cell[][] fillFullBoard(Cell[][] arrayPlayer1, Cell[][] arrayPlayer2, int fieldSize) {
+    static Cell[][] fillAndPrintFullBoard(Cell[][] arrayPlayer1, Cell[][] arrayPlayer2, int fieldSize) {
         Cell[][] board = new Cell[fieldSize][fieldSize];
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 if (arrayPlayer1[i][j] != Cell.EMPTY) {
                     board[i][j] = arrayPlayer1[i][j];
+                    System.out.print(ANSI_RED + board[i][j].getValue() + ANSI_RESET);
                 } else if (arrayPlayer2[i][j] != Cell.EMPTY) {
                     board[i][j] = arrayPlayer2[i][j];
+                    System.out.print(ANSI_GREEN + board[i][j].getValue() + ANSI_RESET);
                 } else {
                     board[i][j] = Cell.EMPTY;
+                    System.out.print(board[i][j].getValue());
                 }
             }
+            System.out.println();
 
         }
         return board;
@@ -118,7 +117,7 @@ public class chess {
         do {
             coordRow = userInputCheck("Строка: ");
             coordCol = userInputCheck("Столбец: ");
-        } while (arrayActivePlayer[coordRow][coordCol] == Cell.EMPTY && arrayEnemy[coordRow][coordCol] !=Cell.EMPTY);
+        } while (arrayActivePlayer[coordRow][coordCol] == Cell.EMPTY && arrayEnemy[coordRow][coordCol] != Cell.EMPTY);
         Cell figure;
         figure = arrayActivePlayer[coordRow][coordCol];
         arrayActivePlayer[coordRow][coordCol] = Cell.EMPTY;
@@ -132,20 +131,21 @@ public class chess {
         arrayActivePlayer[coordRowMove][coordColMove] = figure;
     }
 
+    //проверка возможности походить
     static boolean checkPossibleMove(Cell fiqure, Cell[][] arrayEnemy, int x1, int y1, int x2, int y2, Player activePlayer) {
         boolean result = false;
         switch (fiqure) {
             case PAWN:
                 int tempCoodrX1;
                 int tempCoodrX2;
-                if (activePlayer == Player.PLAYER2){
+                if (activePlayer == Player.PLAYER2) {
                     tempCoodrX1 = x2;
                     tempCoodrX2 = x1;
-                }else{
+                } else {
                     tempCoodrX1 = x1;
                     tempCoodrX2 = x2;
                 }
-                if (tempCoodrX2 - tempCoodrX1 == 1 && arrayEnemy[x2][y2] == Cell.EMPTY  && arrayEnemy[x2][y2] == Cell.EMPTY){
+                if (tempCoodrX2 - tempCoodrX1 == 1 && arrayEnemy[x2][y2] == Cell.EMPTY && arrayEnemy[x2][y2] == Cell.EMPTY) {
                     result = true;
                 } else {
                     System.out.println("Ход невозможен. Повторите попытку");
@@ -153,8 +153,8 @@ public class chess {
                 break;
             case ROOK:
                 if (x1 == x2 || y1 == y2) {
-                    if (arrayEnemy[x2][y2]!=Cell.EMPTY){
-                        arrayEnemy[x2][y2]=Cell.EMPTY;
+                    if (arrayEnemy[x2][y2] != Cell.EMPTY) {
+                        arrayEnemy[x2][y2] = Cell.EMPTY;
                     }
                     result = true;
                 } else {
@@ -163,8 +163,8 @@ public class chess {
                 break;
             case KNIGHT:
                 if (Math.abs((x1 - x2) * (y1 - y2)) == 2) {
-                    if (arrayEnemy[x2][y2]!=Cell.EMPTY){
-                        arrayEnemy[x2][y2]=Cell.EMPTY;
+                    if (arrayEnemy[x2][y2] != Cell.EMPTY) {
+                        arrayEnemy[x2][y2] = Cell.EMPTY;
                     }
                     result = true;
                 } else {
@@ -173,8 +173,8 @@ public class chess {
                 break;
             case BISHOP:
                 if ((y1 - y2) * (y1 - y2) == (x1 - x2) * (x1 - x2)) {
-                    if (arrayEnemy[x2][y2]!=Cell.EMPTY){
-                        arrayEnemy[x2][y2]=Cell.EMPTY;
+                    if (arrayEnemy[x2][y2] != Cell.EMPTY) {
+                        arrayEnemy[x2][y2] = Cell.EMPTY;
                     }
                     result = true;
                 } else {
@@ -183,8 +183,8 @@ public class chess {
                 break;
             case QUENN:
                 if (x1 == x2 || y1 == y2 || (y1 - y2) * (y1 - y2) == (x1 - x2) * (x1 - x2)) {
-                    if (arrayEnemy[x2][y2]!=Cell.EMPTY){
-                        arrayEnemy[x2][y2]=Cell.EMPTY;
+                    if (arrayEnemy[x2][y2] != Cell.EMPTY) {
+                        arrayEnemy[x2][y2] = Cell.EMPTY;
                     }
                     result = true;
                 } else {
@@ -193,8 +193,8 @@ public class chess {
                 break;
             case KING:
                 if ((x1 - 1 <= x2 && x2 <= x1 + 1) && (y1 - 1 <= y2 && y2 <= y1 + 1)) {
-                    if (arrayEnemy[x2][y2]!=Cell.EMPTY){
-                        arrayEnemy[x2][y2]=Cell.EMPTY;
+                    if (arrayEnemy[x2][y2] != Cell.EMPTY) {
+                        arrayEnemy[x2][y2] = Cell.EMPTY;
                     }
                     result = true;
                 } else {
@@ -238,16 +238,13 @@ public class chess {
         activePlayer = Player.PLAYER1;
 
         fillStartBoard(playerWhiteField, Player.PLAYER1);
-        printArray(playerWhiteField);
         System.out.println();
         fillStartBoard(playerBlackField, Player.PLAYER2);
-        printArray(playerBlackField);
 
 
         while (isPlay) {
-            board = fillFullBoard(playerWhiteField, playerBlackField, fieldSize);
+            board = fillAndPrintFullBoard(playerWhiteField, playerBlackField, fieldSize);
             System.out.println();
-            printArray(board);
             if (activePlayer == Player.PLAYER1) {
                 movePlayer(playerWhiteField, playerBlackField, activePlayer);
                 activePlayer = Player.PLAYER2;
