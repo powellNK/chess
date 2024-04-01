@@ -127,7 +127,7 @@ public class chess {
             System.out.println("Координаты хода: ");
             coordRowMove = userInputCheck("Строка: ");
             coordColMove = userInputCheck("Столбец: ");
-        }while(checkPossibleMove(figure, arrayEnemy,coordRow,coordCol,coordRowMove,coordColMove) == false);
+        } while (checkPossibleMove(figure, arrayEnemy, coordRow, coordCol, coordRowMove, coordColMove) == false);
 
         arrayActivePlayer[coordRowMove][coordColMove] = figure;
     }
@@ -148,18 +148,29 @@ public class chess {
                     System.out.println("Ход невозможен. Повторите попытку");
                 }
             case KNIGHT:
-                if (Math.abs((x1 - x2) * (y1 - y2)) == 2){
+                if (Math.abs((x1 - x2) * (y1 - y2)) == 2) {
                     result = true;
                 } else {
                     System.out.println("Ход невозможен. Повторите попытку");
                 }
             case BISHOP:
-                if ((y1-y2)*(y1-y2) == (x1-x2)*(x1-x2)){
+                if ((y1 - y2) * (y1 - y2) == (x1 - x2) * (x1 - x2)) {
                     result = true;
-                } else{
+                } else {
                     System.out.println("Ход невозможен. Повторите попытку");
                 }
-
+            case QUENN:
+                if (x1 == x2 || y1 == y2 || (y1 - y2) * (y1 - y2) == (x1 - x2) * (x1 - x2)) {
+                    result = true;
+                } else {
+                    System.out.println("Ход невозможен. Повторите попытку");
+                }
+            case KING:
+                if ((x1 - 1 <= x2 && x2 <= x1 + 1) && (y1 - 1 <= y2 && y2 <= y1 + 1)) {
+                    result = true;
+                } else {
+                    System.out.println("Ход невозможен. Повторите попытку");
+                }
         }
         return result;
     }
