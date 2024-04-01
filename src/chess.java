@@ -145,12 +145,13 @@ public class chess {
                     tempCoodrX1 = x1;
                     tempCoodrX2 = x2;
                 }
-                if (tempCoodrX2 - tempCoodrX1 == 1 && arrayEnemy[x2][y2] == Cell.EMPTY && arrayEnemy[x2][y2] == Cell.EMPTY) {
+                if (tempCoodrX2 - tempCoodrX1 == 1 && arrayEnemy[x2][y2] == Cell.EMPTY && arrayEnemy[x2][y2] == Cell.EMPTY) {   //пешка умеет ходить, но не умеет бить
                     result = true;
                 } else {
                     System.out.println("Ход невозможен. Повторите попытку");
                 }
                 break;
+                // остальные умеют бить, но и могут ходить через остальные фигуры=_=
             case ROOK:
                 if (x1 == x2 || y1 == y2) {
                     if (arrayEnemy[x2][y2] != Cell.EMPTY) {
