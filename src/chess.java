@@ -121,7 +121,7 @@ public class chess {
     }
 
 
-    //Ход игрока
+    //Корректность ввода координат и ход игрока
     static void movePlayer(Cell[][] arrayActivePlayer, Cell[][] arrayEnemy) {
         System.out.println("Координаты фигуры: ");
         int coordRow, coordCol;
