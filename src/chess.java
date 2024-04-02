@@ -255,79 +255,79 @@ public class chess {
             } else {
                 yShift = -1;
             }
-                for (int i = x1 + xShift, j = y1 + yShift; i != x2 && j != y2; i += xShift, j += yShift) {
-                    if (arrayEnemy[i][j] != Cell.EMPTY || arrayActivePlayer[i][j] != Cell.EMPTY) {    // проверка препятствий по пути к конечным координатам
-                        Check = false;
-                        break;
-                    }
+            for (int i = x1 + xShift, j = y1 + yShift; i != x2 && j != y2; i += xShift, j += yShift) {
+                if (arrayEnemy[i][j] != Cell.EMPTY || arrayActivePlayer[i][j] != Cell.EMPTY) {    // проверка препятствий по пути к конечным координатам
+                    Check = false;
+                    break;
                 }
-            } else{
-                Check = false;
             }
-            return Check;
+        } else {
+            Check = false;
+        }
+        return Check;
+    }
+
+    public enum Cell {
+        PAWN('P'),
+        ROOK('R'),
+        KNIGHT('N'),
+        BISHOP('B'),
+        QUENN('Q'),
+        KING('K'),
+        EMPTY('.');
+
+        private char value;
+
+        Cell(char value) {
+            this.value = value;
         }
 
-        public enum Cell {
-            PAWN('P'),
-            ROOK('R'),
-            KNIGHT('N'),
-            BISHOP('B'),
-            QUENN('Q'),
-            KING('K'),
-            EMPTY('.');
-
-            private char value;
-
-            Cell(char value) {
-                this.value = value;
-            }
-
-            public char getValue() {
-                return value;
-            }
-        }
-
-        public static void main (String[]args){
-
-            int fieldSize = 8;
-            Cell[][] board = new Cell[fieldSize][fieldSize];
-            Cell[][] playerWhiteField = new Cell[fieldSize][fieldSize];
-            Cell[][] playerBlackField = new Cell[fieldSize][fieldSize];
-            boolean isPlay = true;
-            Player activePlayer, winner = Player.INTIAL;
-
-            activePlayer = Player.PLAYER1;
-
-            fillStartBoard(playerWhiteField, Player.PLAYER1);
-            System.out.println();
-            fillStartBoard(playerBlackField, Player.PLAYER2);
-
-
-            while (isPlay) {
-                board = fillAndPrintFullBoard(playerWhiteField, playerBlackField, fieldSize);
-                System.out.println();
-                if (activePlayer == Player.PLAYER1) {
-                    movePlayer(playerWhiteField, playerBlackField);
-                    activePlayer = Player.PLAYER2;
-                } else {
-                    movePlayer(playerBlackField, playerWhiteField);
-                    activePlayer = Player.PLAYER1;
-                }
-
-                int counterKing = 0;
-                for (int i = 0; i < board.length; i++) {
-                    for (int j = 0; j < board[i].length; j++) {
-                        if (board[i][j] == Cell.KING) {
-                            counterKing++;
-                        }
-                    }
-                }
-                //дает сделать лишний ход
-                if (counterKing < 2) {
-                    isPlay = false;
-                    System.out.println("WIN " + activePlayer);
-                }
-
-            }
+        public char getValue() {
+            return value;
         }
     }
+
+    public static void main(String[] args) {
+
+        int fieldSize = 8;
+        Cell[][] board = new Cell[fieldSize][fieldSize];
+        Cell[][] playerWhiteField = new Cell[fieldSize][fieldSize];
+        Cell[][] playerBlackField = new Cell[fieldSize][fieldSize];
+        boolean isPlay = true;
+        Player activePlayer, winner = Player.INTIAL;
+
+        activePlayer = Player.PLAYER1;
+
+        fillStartBoard(playerWhiteField, Player.PLAYER1);
+        System.out.println();
+        fillStartBoard(playerBlackField, Player.PLAYER2);
+
+
+        while (isPlay) {
+            board = fillAndPrintFullBoard(playerWhiteField, playerBlackField, fieldSize);
+            System.out.println();
+            if (activePlayer == Player.PLAYER1) {
+                movePlayer(playerWhiteField, playerBlackField);
+                activePlayer = Player.PLAYER2;
+            } else {
+                movePlayer(playerBlackField, playerWhiteField);
+                activePlayer = Player.PLAYER1;
+            }
+
+            int counterKing = 0;
+            for (int i = 0; i < board.length; i++) {
+                for (int j = 0; j < board[i].length; j++) {
+                    if (board[i][j] == Cell.KING) {
+                        counterKing++;
+                    }
+                }
+            }
+            //дает сделать лишний ход
+            if (counterKing < 2) {
+                isPlay = false;
+                System.out.println("WIN " + activePlayer);
+            }
+
+        }
+    }
+}
