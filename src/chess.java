@@ -39,8 +39,8 @@ public class chess {
     }
 
     public enum Player {
-        PLAYER1('W'),
-        PLAYER2('B'),
+        PLAYER1('R'),
+        PLAYER2('G'),
         INTIAL(' ');
 
         private char value;
@@ -126,6 +126,7 @@ public class chess {
         System.out.println("Координаты фигуры: ");
         int coordRow, coordCol;
         int coordRowMove, coordColMove;
+        boolean checkMove;
         do {
             coordRow = userInputCheck("Строка: ");
             coordCol = userInputCheck("Столбец: ");
@@ -138,8 +139,9 @@ public class chess {
             System.out.println("Координаты хода: ");
             coordRowMove = userInputCheck("Строка: ");
             coordColMove = userInputCheck("Столбец: ");
-        } while (checkPossibleMove(figure, arrayEnemy, arrayActivePlayer, coordRow, coordCol, coordRowMove, coordColMove, activePlayer) == false);
-        if (checkPossibleMove(figure, arrayEnemy, arrayActivePlayer, coordRow, coordCol, coordRowMove, coordColMove, activePlayer) == true) {
+            checkMove = checkPossibleMove(figure, arrayEnemy, arrayActivePlayer, coordRow, coordCol, coordRowMove, coordColMove, activePlayer);
+        } while ( checkMove == false);
+        if (checkMove == true) {
             arrayActivePlayer[coordRowMove][coordColMove] = figure;
         }
     }
@@ -152,14 +154,14 @@ public class chess {
             case PAWN:
                 int tempCoodrX1;
                 int tempCoodrX2;
-                if (activePlayer == Player.PLAYER2) {   // заменить эту логику на АБС и не передавать активного игрока
+                if (activePlayer == Player.PLAYER2) {   // заменить эту логику на АБС и не придется передавать активного игрока
                     tempCoodrX1 = x2;
                     tempCoodrX2 = x1;
                 } else {
                     tempCoodrX1 = x1;
                     tempCoodrX2 = x2;
                 }
-                if (tempCoodrX2 - tempCoodrX1 == 1 && arrayEnemy[x2][y2] == Cell.EMPTY && arrayEnemy[x2][y2] == Cell.EMPTY) {   //пешка умеет ходить, но не умеет бить
+                if (tempCoodrX2 - tempCoodrX1 == 1 && arrayEnemy[x2][y2] == Cell.EMPTY && arrayEnemy[x2][y2] == Cell.EMPTY) {   //умеет ходить, но не умеет бить
                     result = true;
                 } else {
                     System.out.println("Ход невозможен. Повторите попытку");
@@ -196,7 +198,7 @@ public class chess {
                 }
                 break;
             case KNIGHT: // конь
-                if (Math.abs((x1 - x2) * (y1 - y2)) == 2 && arrayActivePlayer[x2][y2] == Cell.EMPTY) {
+                if (Math.abs((x1 - x2) * (y1 - y2)) == 2 && arrayActivePlayer[x2][y2] == Cell.EMPTY) { //логика хода и проверка на то, что там нет своих фигур
                     if (arrayEnemy[x2][y2] != Cell.EMPTY) {
                         arrayEnemy[x2][y2] = Cell.EMPTY;
                     }
@@ -226,6 +228,7 @@ public class chess {
                 }
                 break;
             case QUENN:
+                // добавить проверки слона и ладьи на препятствие!!! возможно в метод их добавить
                 if (x1 == x2 || y1 == y2 || (y1 - y2) * (y1 - y2) == (x1 - x2) * (x1 - x2)) {
                     if (arrayEnemy[x2][y2] != Cell.EMPTY) {
                         arrayEnemy[x2][y2] = Cell.EMPTY;
