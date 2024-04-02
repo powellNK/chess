@@ -7,9 +7,9 @@ public class chess {
     static int min(int a, int b) {
         int min;
         if (a > b) {
-            min = a;
-        } else {
             min = b;
+        } else {
+            min = a;
         }
         return min;
     }
@@ -139,18 +139,20 @@ public class chess {
             coordRowMove = userInputCheck("Строка: ");
             coordColMove = userInputCheck("Столбец: ");
         } while (checkPossibleMove(figure, arrayEnemy, arrayActivePlayer, coordRow, coordCol, coordRowMove, coordColMove, activePlayer) == false);
-
-        arrayActivePlayer[coordRowMove][coordColMove] = figure;
+        if (checkPossibleMove(figure, arrayEnemy, arrayActivePlayer, coordRow, coordCol, coordRowMove, coordColMove, activePlayer) == true) {
+            arrayActivePlayer[coordRowMove][coordColMove] = figure;
+        }
     }
 
     //проверка возможности походить
     static boolean checkPossibleMove(Cell fiqure, Cell[][] arrayEnemy, Cell[][] arrayActivePlayer, int x1, int y1, int x2, int y2, Player activePlayer) {
         boolean result = false;
+        boolean Check = true;
         switch (fiqure) {
             case PAWN:
                 int tempCoodrX1;
                 int tempCoodrX2;
-                if (activePlayer == Player.PLAYER2) {
+                if (activePlayer == Player.PLAYER2) {   // заменить эту логику на АБС и не передавать активного игрока
                     tempCoodrX1 = x2;
                     tempCoodrX2 = x1;
                 } else {
@@ -164,32 +166,36 @@ public class chess {
                 }
                 break;
             // остальные умеют бить, но и могут ходить через остальные фигуры=_=
-            case ROOK:
-                if (x1 == x2) {
-                    for (int i = min(y1, y2); i < Math.abs(y1 - y2); i++) {
-                        if (arrayEnemy[x2][i] != Cell.EMPTY || arrayActivePlayer[x2][i] != Cell.EMPTY) {
+            case ROOK: //если некуда пойти, то зависнет!!
+                if (x1 == x2 && arrayActivePlayer[x2][y2] == Cell.EMPTY) {   // логика хода и проверка на то, что там нет своих фигур
+                    for (int i = min(y1, y2) + 1; i < Math.abs(y1 - y2); i++) {
+                        if (arrayEnemy[x2][i] != Cell.EMPTY || arrayActivePlayer[x2][i] != Cell.EMPTY) {  // проверка препятствий по пути к конечным координатам
                             System.out.println("Ход невозможен. Повторите попытку");
+                            Check = false;
                             break;
-                        } else {
-                            arrayEnemy[x2][y2] = Cell.EMPTY;
-                            result = true;
                         }
                     }
-                } else if (y1 == y2) {
-                    for (int i = min(x1, x2); i < Math.abs(x1 - x2); i++) {
-                        if (arrayEnemy[i][y2] != Cell.EMPTY || arrayActivePlayer[i][y2] != Cell.EMPTY) {
+                    if (Check) {
+                        arrayEnemy[x2][y2] = Cell.EMPTY;
+                        result = true;
+                    }
+                } else if (y1 == y2 && arrayActivePlayer[x2][y2] == Cell.EMPTY) {   // логика хода и проверка на то, что там нет своих фигур
+                    for (int i = min(x1, x2) + 1; i < Math.abs(x1 - x2); i++) {
+                        if (arrayEnemy[i][y2] != Cell.EMPTY || arrayActivePlayer[i][y2] != Cell.EMPTY) { // проверка препятствий по пути к конечным координатам
                             System.out.println("Ход невозможен. Повторите попытку");
+                            Check = false;
                             break;
-                        } else {
-                            arrayEnemy[x2][y2] = Cell.EMPTY;
-                            result = true;
                         }
+                    }
+                    if (Check) {
+                        arrayEnemy[x2][y2] = Cell.EMPTY;
+                        result = true;
                     }
                 } else {
                     System.out.println("Ход невозможен. Повторите попытку");
                 }
                 break;
-            case KNIGHT:
+            case KNIGHT: //перезаписывает свои фигуры
                 if (Math.abs((x1 - x2) * (y1 - y2)) == 2) {
                     if (arrayEnemy[x2][y2] != Cell.EMPTY) {
                         arrayEnemy[x2][y2] = Cell.EMPTY;
@@ -199,12 +205,22 @@ public class chess {
                     System.out.println("Ход невозможен. Повторите попытку");
                 }
                 break;
-            case BISHOP:
-                if ((y1 - y2) * (y1 - y2) == (x1 - x2) * (x1 - x2)) {
-                    if (arrayEnemy[x2][y2] != Cell.EMPTY) {
-                        arrayEnemy[x2][y2] = Cell.EMPTY;
+            case BISHOP: // слон
+                if (Math.abs(y1 - y2) == Math.abs(x1 - x2) && arrayActivePlayer[x2][y2] == Cell.EMPTY) {   // логика хода и проверка на то, что там нет своих фигур
+                    int xShift = x1 < x2 ? 1 : -1;
+                    int yShift = y1 < y2 ? 1 : -1;
+                    for (int i = x1 + xShift, j = y1 + yShift; i != x2 && j != y2; i += xShift, j += yShift) {
+                        if (arrayEnemy[i][j] != Cell.EMPTY || arrayActivePlayer[i][j] != Cell.EMPTY) {    // проверка препятствий по пути к конечным координатам
+                            System.out.println("Ход невозможен. Повторите попытку");
+                            Check = false;
+                            break;
+                        }
                     }
-                    result = true;
+                    if (Check) {
+                        arrayEnemy[x2][y2] = Cell.EMPTY;
+                        result = true;
+                    }
+
                 } else {
                     System.out.println("Ход невозможен. Повторите попытку");
                 }
