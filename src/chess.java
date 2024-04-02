@@ -273,7 +273,6 @@ public class chess {
         Cell[][] playerWhiteField = new Cell[fieldSize][fieldSize];
         Cell[][] playerBlackField = new Cell[fieldSize][fieldSize];
         boolean isPlay = true;
-        Random randGenerator = new Random();
         Player activePlayer, winner = Player.INTIAL;
 
         activePlayer = Player.PLAYER1;
