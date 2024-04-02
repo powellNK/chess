@@ -151,13 +151,18 @@ public class chess {
         boolean Check = true;
         switch (fiqure) {
             case PAWN:
-                if (Math.abs(x2 - x1) == 1 && arrayEnemy[x2][y2] == Cell.EMPTY && arrayEnemy[x2][y2] == Cell.EMPTY) {   //умеет ходить, но не умеет бить
+                int xShift = x1 < x2 ? 1 : -1;
+                int yShift = y1 < y2 ? 1 : -1;
+                if (Math.abs(x2 - x1) == 1 && y1==y2 && arrayEnemy[x2][y2] == Cell.EMPTY && arrayEnemy[x2][y2] == Cell.EMPTY) {   //ходить
                     result = true;
-                } else {
+                } else if(x1+xShift == x2 && y1+yShift == y2 && arrayEnemy[x2][y2]!=Cell.EMPTY){ // бить
+                    arrayEnemy[x2][y2] = Cell.EMPTY;
+                    result = true;
+            }else {
                     System.out.println("Ход невозможен. Повторите попытку");
                 }
                 break;
-            case ROOK: //если некуда пойти, то зависнет!!
+            case ROOK: //ладья. если некуда пойти, то зависнет!!
                 if (checkRook(arrayEnemy, arrayActivePlayer, x1, y1, x2, y2)) {
                     arrayEnemy[x2][y2] = Cell.EMPTY;
                     result = true;
@@ -173,7 +178,7 @@ public class chess {
                     System.out.println("Ход невозможен. Повторите попытку");
                 }
                 break;
-            case BISHOP: // слон
+            case BISHOP: // слон . если некуда пойти, то зависнет!!
                 if (checkBishop(arrayEnemy, arrayActivePlayer, x1, y1, x2, y2)) {
                     arrayEnemy[x2][y2] = Cell.EMPTY;
                     result = true;
@@ -182,7 +187,7 @@ public class chess {
                 }
                 break;
             case QUENN:
-                if (checkBishop(arrayEnemy, arrayActivePlayer, x1, y1, x2, y2) || checkRook(arrayEnemy, arrayActivePlayer, x1, y1, x2, y2)) {
+                if (checkBishop(arrayEnemy, arrayActivePlayer, x1, y1, x2, y2) || checkRook(arrayEnemy, arrayActivePlayer, x1, y1, x2, y2)) { //ладья+слон
                     arrayEnemy[x2][y2] = Cell.EMPTY;
                     result = true;
                 } else {
@@ -298,7 +303,7 @@ public class chess {
                 }
             }
             //дает сделать лишний ход
-            if (counterKing<2){
+            if (counterKing < 2) {
                 isPlay = false;
                 System.out.println("WIN " + activePlayer);
             }
