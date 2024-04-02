@@ -195,8 +195,8 @@ public class chess {
                     System.out.println("Ход невозможен. Повторите попытку");
                 }
                 break;
-            case KNIGHT: //перезаписывает свои фигуры
-                if (Math.abs((x1 - x2) * (y1 - y2)) == 2) {
+            case KNIGHT: // конь
+                if (Math.abs((x1 - x2) * (y1 - y2)) == 2 && arrayActivePlayer[x2][y2] == Cell.EMPTY) {
                     if (arrayEnemy[x2][y2] != Cell.EMPTY) {
                         arrayEnemy[x2][y2] = Cell.EMPTY;
                     }
@@ -236,7 +236,7 @@ public class chess {
                 }
                 break;
             case KING:
-                if ((x1 - 1 <= x2 && x2 <= x1 + 1) && (y1 - 1 <= y2 && y2 <= y1 + 1)) {
+                if ((x1 - 1 <= x2 && x2 <= x1 + 1) && (y1 - 1 <= y2 && y2 <= y1 + 1) && arrayActivePlayer[x2][y2] == Cell.EMPTY) {
                     if (arrayEnemy[x2][y2] != Cell.EMPTY) {
                         arrayEnemy[x2][y2] = Cell.EMPTY;
                     }
