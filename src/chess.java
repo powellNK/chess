@@ -157,7 +157,6 @@ public class chess {
                     System.out.println("Ход невозможен. Повторите попытку");
                 }
                 break;
-            // остальные умеют бить, но и могут ходить через остальные фигуры=_=
             case ROOK: //если некуда пойти, то зависнет!!
                 if (checkRook(arrayEnemy, arrayActivePlayer, x1, y1, x2, y2)) {
                     arrayEnemy[x2][y2] = Cell.EMPTY;
@@ -183,7 +182,6 @@ public class chess {
                 }
                 break;
             case QUENN:
-                // добавить проверки слона и ладьи на препятствие!!! возможно в метод их добавить
                 if (checkBishop(arrayEnemy, arrayActivePlayer, x1, y1, x2, y2) || checkRook(arrayEnemy, arrayActivePlayer, x1, y1, x2, y2)) {
                     arrayEnemy[x2][y2] = Cell.EMPTY;
                     result = true;
@@ -290,6 +288,21 @@ public class chess {
                 movePlayer(playerBlackField, playerWhiteField);
                 activePlayer = Player.PLAYER1;
             }
+
+            int counterKing = 0;
+            for (int i = 0; i < board.length; i++) {
+                for (int j = 0; j < board[i].length; j++) {
+                    if (board[i][j] == Cell.KING) {
+                        counterKing++;
+                    }
+                }
+            }
+            //дает сделать лишний ход
+            if (counterKing<2){
+                isPlay = false;
+                System.out.println("WIN " + activePlayer);
+            }
+
         }
     }
 }
