@@ -184,7 +184,7 @@ public class chess {
                 break;
             case QUENN:
                 // добавить проверки слона и ладьи на препятствие!!! возможно в метод их добавить
-                if (checkBishop(arrayEnemy, arrayActivePlayer, x1, y1, x2, y2) == true || checkRook(arrayEnemy, arrayActivePlayer, x1, y1, x2, y2)) {
+                if (checkBishop(arrayEnemy, arrayActivePlayer, x1, y1, x2, y2) || checkRook(arrayEnemy, arrayActivePlayer, x1, y1, x2, y2)) {
                     arrayEnemy[x2][y2] = Cell.EMPTY;
                     result = true;
                 } else {
