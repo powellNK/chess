@@ -75,7 +75,7 @@ public class chess {
                             array[i][j] = Cell.BISHOP;
                             break;
                         case 3:
-                            array[i][j] = Cell.QUENN;
+                            array[i][j] = Cell.QUEEN;
                             break;
                         case 4:
                             array[i][j] = Cell.KING;
@@ -135,9 +135,9 @@ public class chess {
     }
 
     //проверка возможности походить
-    static boolean checkPossibleMove(Cell fiqure, Cell[][] arrayEnemy, Cell[][] arrayActivePlayer, int x1, int y1, int x2, int y2) {
+    static boolean checkPossibleMove(Cell figure, Cell[][] arrayEnemy, Cell[][] arrayActivePlayer, int x1, int y1, int x2, int y2) {
         boolean result = false;
-        switch (fiqure) {
+        switch (figure) {
             case PAWN:
                 int xShift;
                 int yShift;
@@ -176,7 +176,7 @@ public class chess {
                     System.out.println("Ход невозможен. Повторите попытку");
                 }
                 break;
-            case QUENN:
+            case QUEEN:
                 if (checkBishop(arrayEnemy, arrayActivePlayer, x1, y1, x2, y2) || checkRook(arrayEnemy, arrayActivePlayer, x1, y1, x2, y2)) { //ладья+слон
                     arrayEnemy[x2][y2] = Cell.EMPTY;
                     result = true;
@@ -244,7 +244,7 @@ public class chess {
         ROOK('R'),
         KNIGHT('N'),
         BISHOP('B'),
-        QUENN('Q'),
+        QUEEN('Q'),
         KING('K'),
         EMPTY('.');
 
@@ -280,7 +280,7 @@ public class chess {
     public static void main(String[] args) {
 
         int fieldSize = 8;
-        Cell[][] board = new Cell[fieldSize][fieldSize];
+        Cell[][] board;
         Cell[][] playerWhiteField = new Cell[fieldSize][fieldSize];
         Cell[][] playerBlackField = new Cell[fieldSize][fieldSize];
         boolean isPlay = true;
