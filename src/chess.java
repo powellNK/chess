@@ -324,7 +324,7 @@ public class chess {
             if (activePlayer == Player.PLAYER1 && isPlay) {
                 movePlayer(playerWhiteField, playerBlackField);
                 activePlayer = Player.PLAYER2;
-            } else if (activePlayer ==Player.PLAYER2 && isPlay){
+            } else if (activePlayer == Player.PLAYER2 && isPlay) {
                 movePlayer(playerBlackField, playerWhiteField);
                 activePlayer = Player.PLAYER1;
             }
