@@ -1,18 +1,7 @@
-import java.util.Random;
 import java.util.Scanner;
 
 
 public class chess {
-
-    static int min(int a, int b) {
-        int min;
-        if (a > b) {
-            min = b;
-        } else {
-            min = a;
-        }
-        return min;
-    }
 
     static int getShift(int value1, int value2) {
         int shift;
@@ -50,18 +39,9 @@ public class chess {
     }
 
     public enum Player {
-        PLAYER1('R'),
-        PLAYER2('G');
+        PLAYER1,
+        PLAYER2
 
-        private char value;
-
-        Player(char value) {
-            this.value = value;
-        }
-
-        public char getValue() {
-            return value;
-        }
     }
 
 
@@ -149,16 +129,14 @@ public class chess {
             coordRowMove = userInputCheck("Строка: ");
             coordColMove = userInputCheck("Столбец: ");
             checkMove = checkPossibleMove(figure, arrayEnemy, arrayActivePlayer, coordRow, coordCol, coordRowMove, coordColMove);
-        } while (checkMove == false);
-        if (checkMove == true) {
-            arrayActivePlayer[coordRowMove][coordColMove] = figure;
-        }
+        } while (!checkMove);
+        arrayActivePlayer[coordRowMove][coordColMove] = figure;
+
     }
 
     //проверка возможности походить
     static boolean checkPossibleMove(Cell fiqure, Cell[][] arrayEnemy, Cell[][] arrayActivePlayer, int x1, int y1, int x2, int y2) {
         boolean result = false;
-        boolean Check = true;
         switch (fiqure) {
             case PAWN:
                 int xShift;
@@ -221,14 +199,14 @@ public class chess {
     static boolean checkRook(Cell[][] arrayEnemy, Cell[][] arrayActivePlayer, int x1, int y1, int x2, int y2) {
         boolean Check = true;
         if (x1 == x2 && arrayActivePlayer[x2][y2] == Cell.EMPTY) {   // логика хода и проверка на то, что там нет своих фигур
-            for (int i = min(y1, y2) + 1; i < Math.abs(y1 - y2); i++) {
+            for (int i = Math.min(y1, y2) + 1; i < Math.abs(y1 - y2); i++) {
                 if (arrayEnemy[x2][i] != Cell.EMPTY || arrayActivePlayer[x2][i] != Cell.EMPTY) {  // проверка препятствий по пути к конечным координатам
                     Check = false;
                     break;
                 }
             }
         } else if (y1 == y2 && arrayActivePlayer[x2][y2] == Cell.EMPTY) {   // логика хода и проверка на то, что там нет своих фигур
-            for (int i = min(x1, x2) + 1; i < Math.abs(x1 - x2); i++) {
+            for (int i = Math.min(x1, x2) + 1; i < Math.abs(x1 - x2); i++) {
                 if (arrayEnemy[i][y2] != Cell.EMPTY || arrayActivePlayer[i][y2] != Cell.EMPTY) { // проверка препятствий по пути к конечным координатам
                     Check = false;
                     break;
@@ -270,7 +248,7 @@ public class chess {
         KING('K'),
         EMPTY('.');
 
-        private char value;
+        private final char value;
 
         Cell(char value) {
             this.value = value;
