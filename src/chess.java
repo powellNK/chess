@@ -14,6 +14,17 @@ public class chess {
         return min;
     }
 
+    static int getShift(int value1, int value2){
+        int shift;
+
+        if (value1 < value2) {
+            shift = 1;
+        } else {
+            shift = -1;
+        }
+        return shift;
+    }
+
     //потом цвет фигур
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
@@ -153,16 +164,8 @@ public class chess {
             case PAWN:
                 int xShift;
                 int yShift;
-                if (x1 < x2) {
-                    xShift = 1;
-                } else {
-                    xShift = -1;
-                }
-                if (y1 < y2) {
-                    yShift = 1;
-                } else {
-                    yShift = -1;
-                }
+                xShift = getShift(x1,x2);
+                yShift = getShift(y1,y2);
                 if (Math.abs(x2 - x1) == 1 && y1 == y2 && arrayEnemy[x2][y2] == Cell.EMPTY && arrayEnemy[x2][y2] == Cell.EMPTY) {   //ходить
                     result = true;
                 } else if (x1 + xShift == x2 && y1 + yShift == y2 && arrayEnemy[x2][y2] != Cell.EMPTY) { // бить
@@ -245,16 +248,8 @@ public class chess {
 
             int xShift;
             int yShift;
-            if (x1 < x2) {
-                xShift = 1;
-            } else {
-                xShift = -1;
-            }
-            if (y1 < y2) {
-                yShift = 1;
-            } else {
-                yShift = -1;
-            }
+            xShift = getShift(x1,x2);
+            yShift = getShift(y1,y2);
             for (int i = x1 + xShift, j = y1 + yShift; i != x2 && j != y2; i += xShift, j += yShift) {
                 if (arrayEnemy[i][j] != Cell.EMPTY || arrayActivePlayer[i][j] != Cell.EMPTY) {    // проверка препятствий по пути к конечным координатам
                     Check = false;
