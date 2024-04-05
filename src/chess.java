@@ -51,8 +51,7 @@ public class chess {
 
     public enum Player {
         PLAYER1('R'),
-        PLAYER2('G'),
-        INTIAL(' ');
+        PLAYER2('G');
 
         private char value;
 
@@ -307,9 +306,7 @@ public class chess {
         Cell[][] playerWhiteField = new Cell[fieldSize][fieldSize];
         Cell[][] playerBlackField = new Cell[fieldSize][fieldSize];
         boolean isPlay = true;
-        Player activePlayer, winner = Player.INTIAL;
-
-        activePlayer = Player.PLAYER1;
+        Player activePlayer = Player.PLAYER1;
 
         fillStartBoard(playerWhiteField, Player.PLAYER1);
         System.out.println();
