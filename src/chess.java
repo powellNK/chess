@@ -14,7 +14,7 @@ public class chess {
         return min;
     }
 
-    static int getShift(int value1, int value2){
+    static int getShift(int value1, int value2) {
         int shift;
 
         if (value1 < value2) {
@@ -164,8 +164,8 @@ public class chess {
             case PAWN:
                 int xShift;
                 int yShift;
-                xShift = getShift(x1,x2);
-                yShift = getShift(y1,y2);
+                xShift = getShift(x1, x2);
+                yShift = getShift(y1, y2);
                 if (Math.abs(x2 - x1) == 1 && y1 == y2 && arrayEnemy[x2][y2] == Cell.EMPTY && arrayEnemy[x2][y2] == Cell.EMPTY) {   //ходить
                     result = true;
                 } else if (x1 + xShift == x2 && y1 + yShift == y2 && arrayEnemy[x2][y2] != Cell.EMPTY) { // бить
@@ -248,8 +248,8 @@ public class chess {
 
             int xShift;
             int yShift;
-            xShift = getShift(x1,x2);
-            yShift = getShift(y1,y2);
+            xShift = getShift(x1, x2);
+            yShift = getShift(y1, y2);
             for (int i = x1 + xShift, j = y1 + yShift; i != x2 && j != y2; i += xShift, j += yShift) {
                 if (arrayEnemy[i][j] != Cell.EMPTY || arrayActivePlayer[i][j] != Cell.EMPTY) {    // проверка препятствий по пути к конечным координатам
                     Check = false;
@@ -282,6 +282,24 @@ public class chess {
         }
     }
 
+    static boolean checkWin(Cell[][] array, Player player) {
+        int counterKing = 0;
+        boolean isPlay = true;
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array[i].length; j++) {
+                if (array[i][j] == Cell.KING) {
+                    counterKing++;
+                }
+            }
+        }
+        //дает сделать лишний ход
+        if (counterKing < 2) {
+            isPlay = false;
+            System.out.println("WIN " + player);
+        }
+        return isPlay;
+    }
+
     public static void main(String[] args) {
 
         int fieldSize = 8;
@@ -300,27 +318,15 @@ public class chess {
 
         while (isPlay) {
             board = fillAndPrintFullBoard(playerWhiteField, playerBlackField, fieldSize);
+            isPlay = checkWin(board, activePlayer);
+
             System.out.println();
-            if (activePlayer == Player.PLAYER1) {
+            if (activePlayer == Player.PLAYER1 && isPlay) {
                 movePlayer(playerWhiteField, playerBlackField);
                 activePlayer = Player.PLAYER2;
-            } else {
+            } else if (activePlayer ==Player.PLAYER2 && isPlay){
                 movePlayer(playerBlackField, playerWhiteField);
                 activePlayer = Player.PLAYER1;
-            }
-
-            int counterKing = 0;
-            for (int i = 0; i < board.length; i++) {
-                for (int j = 0; j < board[i].length; j++) {
-                    if (board[i][j] == Cell.KING) {
-                        counterKing++;
-                    }
-                }
-            }
-            //дает сделать лишний ход
-            if (counterKing < 2) {
-                isPlay = false;
-                System.out.println("WIN " + activePlayer);
             }
 
         }
